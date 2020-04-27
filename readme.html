@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Watching Observers</title>
+</head>
+<body>
+<h1>Watching Observers</h1>
+<h3>Version 1.0.0, by lat9</h3>
+<h4>Copyright, 2020.  <a href="https://vinosdefrutastropicales.com" target="_blank">Vinos de Frutas Tropicales</a></h4>
+<h4>Zen Cart Support Thread: <a href="https://www.zen-cart.com/showthread.php?226649-Watching-Observers-Support-Thread" target="_blank">https://www.zen-cart.com/showthread.php?226649-Watching-Observers-Support-Thread</a></h4>
+
+<p>As more and more plugins are relying on Zen Cart notifiers to perform their customizations, it can be a developer's debug nightmare when multiple observers are &quot;watching&quot; for the same event, but one is not &quot;playing well with others&quot;.  It can be a royal-pain to determine who's making those variable changes.</p>
+
+<p>This simple script loads, presumably, at the very end of the site's auto-loaders and generates a report indicating what event(s) are being observed.</p>
+
+<p>Here's a sample of the output:</p>
+
+<pre><code>
+Class (emp_order_observer) is watching for NOTIFY_ORDER_DURING_CREATE_ADDED_ORDER_COMMENT.
+Class (emp_order_observer) is watching for NOTIFY_PROCESS_3RD_PARTY_LOGINS.
+</code></pre>
+
+<p><strong>Note</strong>: This is a <em>developer tool</em>, not a "proper" plugin.  There's no language file, no means (although it's open source) to create an entry in the admin's menu.</p>
+
+<h2 id="installation">Installation</h2>
+
+<p>Installation is simple (there are only two files):</p>
+<ol>
+    <li>/includes/auto_loaders/config.watching_observers.php</li>
+    <li>/includes/init_includes/init_watching_observers.php</li>
+</ol>
+<p>Just copy those two files to your Zen Cart storefront and, for each page-load, a file named <code>watching_observers_{page_base}_YYYYMMDD_HHIISS.log</code> is created in the site's <code>/logs</code> sub-directory.</p>
+
+<p>To disable the functionality, either remove those two files or just rename the <code>config.watching_observers.php</code> to have a different file extension, e.g. <code>.php~</code>.  To re-enable the functionality, just rename that file's extension back to <code>.php</code>.</p>
+
+<p>You can also limit the output to <em>your</em> IP address.  Either directly edit <code>init_watching_observers.php</code>:</p>
+<pre><code>
+if (!defined('WATCHING_OBSERVERS_IP')) define('WATCHING_OBSERVERS_IP', '');
+</code></pre>
+<p>&hellip; changing the empty string to your IP address or create a file in the store's <code>/includes/extra_datafiles</code> sub-directory that contains that definition's override.</p>
+
+<h2>Change History</h2>
+<ul>
+    <li>v1.0.0, 20200427: Initial release.</li>
+</ul>
+</body>
+</html>
