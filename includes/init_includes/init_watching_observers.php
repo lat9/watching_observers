@@ -16,8 +16,14 @@ if (WATCHING_OBSERVERS_IP != '' && WATCHING_OBSERVERS_IP != $_SERVER['REMOTE_ADD
 }
 
 $wiw_logfile = DIR_FS_LOGS . '/watching_observers_' . $current_page_base . '_' . date('Ymd_His') . '.log';
-$observers = $zco_notifier->getStaticObserver();
-if ($observers != null) {
+
+if (method_exists($zco_notifier, 'getStaticObserver')) { //legacy
+    $observers = $zco_notifier->getStaticObserver();
+} else {
+    $observers = $zco_notifier->getRegisteredObservers();
+}
+
+if (!empty($observers)) {
     foreach ($observers as $key => $o) {
         $class_name = get_class($o['obs']);
         $event_id = $o['eventID'];
